@@ -4,7 +4,8 @@
   "description": "Lebo is running a local cattery and people can book their kittens in for up to 10 days at a time while they are going on holiday.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "start": "nodemon"
   },
   "keywords": [],
   "author": "",
@@ -12,7 +13,8 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
-    "express-handlebars": "^5.1.0"
+    "express-handlebars": "^5.1.0",
+    "pg": "^8.3.3"
   },
   "devDependencies": {
     "mocha": "^8.1.1"

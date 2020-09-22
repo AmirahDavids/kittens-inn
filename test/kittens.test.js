@@ -4,7 +4,7 @@ describe("The kittens in", function () {
 
 	const pg = require("pg");
 	const Pool = pg.Pool;
-	const connectionString = process.env.DATABASE_URL || 'postgresql://coder:pg123@localhost:5432/kitten_inn';
+	const connectionString = process.env.DATABASE_URL || 'postgresql://amirah:coder123@localhost:5432/kitten_inn';
 	const pool = new Pool({
 		connectionString
 	});
@@ -20,9 +20,9 @@ describe("The kittens in", function () {
 		await pool.query(INSERT_QUERY, ["Spotty", 7, "Wednesday"]);
 
 		const results = await pool.query("select count(*) from booking");
-		
+
 		// how many bookings should have been added?
-		assert.equal(0, results.rows[0].count);
+		assert.equal(2, results.rows[0].count);
 
 	});
 
@@ -32,11 +32,11 @@ describe("The kittens in", function () {
 		await pool.query(INSERT_QUERY, ["Spotty", 3, "Friday"]);
 		await pool.query(INSERT_QUERY, ["Kitty", 7, "Thursday"]);
 
-		const results = await pool.query("select count(*) from booking");
+		const results = await pool.query("select count(*)from booking");
 
 		// how many bookings should be found?
-		assert.equal(0, results.rows[0].count);
-		
+		assert.equal(3, results.rows[0].count);
+
 	});
 
 	it("should be able to find a booking", async function () {
@@ -46,9 +46,9 @@ describe("The kittens in", function () {
 		const results = await pool.query("select * from booking where name = $1", ["Kitty"]);
 
 		// what fields should have been found in the database?
-		assert.equal("", results.rows[0].name);
-		assert.equal(0, results.rows[0].staying_for);
-		assert.equal("", results.rows[0].arriving_on);
+		assert.equal("Kitty", results.rows[0].name);
+		assert.equal(7, results.rows[0].staying_for);
+		assert.equal("Thursday", results.rows[0].arriving_on);
 
 	});
 
@@ -67,12 +67,11 @@ describe("The kittens in", function () {
 		results = await pool.query("select * from booking where name = $1", ["Kitty"]);
 
 		// what new values should have been found
-		assert.equal("", results.rows[0].name);
-		assert.equal(0, results.rows[0].staying_for);
-		assert.equal("", results.rows[0].arriving_on);
+		assert.equal("Kitty", results.rows[0].name);
+		assert.equal(5, results.rows[0].staying_for);
+		assert.equal("Thursday", results.rows[0].arriving_on);
 
 	});
-
 
 	it("should be able to find bookings for 5 days or longer", async function () {
 
@@ -83,11 +82,11 @@ describe("The kittens in", function () {
 		const results = await pool.query("select count(*) from booking where staying_for >= 5");
 
 		// how many bookings should be found?
-		assert.equal(0, results.rows[0].count);
-		
+		assert.equal(2, results.rows[0].count);
+
 	});
 
-	after(function() {
+	after(function () {
 		pool.end();
 	})
 
